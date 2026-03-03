@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+    <meta name="description"
+        content="Download YouTube videos in high quality. Choose from multiple resolutions including 4K, 1080p, 720p or extract audio as MP3.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="background-animation"></div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                </svg>
+                <h1>YouTube Downloader</h1>
+            </div>
+            <p class="tagline">Download videos in stunning quality</p>
+        </header>
+
+        <main class="main-content">
+            <!-- URL Input Section -->
+            <section class="input-section glass-card">
+                <div class="input-wrapper">
+                    <input type="text" id="url-input" class="url-input" placeholder="Paste YouTube URL here..."
+                        autocomplete="off">
+                    <button id="fetch-btn" class="btn btn-primary">
+                        <span class="btn-text">Fetch</span>
+                        <span class="btn-loader"></span>
+                    </button>
+                </div>
+                <p class="input-hint">Supports: youtube.com, youtu.be, YouTube Shorts</p>
+            </section>
+
+            <!-- Video Info Section (Hidden initially) -->
+            <section id="video-info" class="video-info glass-card hidden">
+                <div class="video-preview">
+                    <img id="video-thumbnail" src="" alt="Video thumbnail" class="thumbnail">
+                    <span id="video-duration" class="duration-badge">0:00</span>
+                </div>
+                <div class="video-details">
+                    <h2 id="video-title" class="video-title">Video Title</h2>
+                    <p id="video-uploader" class="video-uploader">Channel Name</p>
+                    <div class="video-stats">
+                        <span id="video-views" class="stat">0 views</span>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Playlist Info Section (Hidden initially) -->
+            <section id="playlist-info" class="playlist-info glass-card hidden">
+                <div class="playlist-header">
+                    <div class="playlist-meta">
+                        <h2 id="playlist-title" class="playlist-title">Playlist Title</h2>
+                        <p id="playlist-uploader" class="playlist-uploader">Channel Name</p>
+                        <p id="playlist-count" class="playlist-count">0 videos</p>
+                    </div>
+                    <div class="playlist-actions">
+                        <button id="select-all-btn" class="btn btn-sm">Select All</button>
+                        <button id="deselect-all-btn" class="btn btn-sm">Deselect All</button>
+                    </div>
+                </div>
+
+                <div class="playlist-items-container">
+                    <ul id="playlist-items" class="playlist-items">
+                        <!-- Items will be injected here -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Download Options Section (Hidden initially) -->
+            <section id="download-options" class="download-options glass-card hidden">
+                <h3 class="section-title">Download Options</h3>
+
+                <div class="options-grid">
+                    <!-- Quality Selector -->
+                    <div class="option-group">
+                        <label class="option-label">Video Quality</label>
+                        <div class="quality-buttons" id="quality-buttons">
+                            <button class="quality-btn" data-quality="2160">4K</button>
+                            <button class="quality-btn" data-quality="1440">1440p</button>
+                            <button class="quality-btn active" data-quality="1080">1080p</button>
+                            <button class="quality-btn" data-quality="720">720p</button>
+                            <button class="quality-btn" data-quality="480">480p</button>
+                            <button class="quality-btn" data-quality="360">360p</button>
+                        </div>
+                    </div>
+
+                    <!-- Format Toggle -->
+                    <div class="option-group">
+                        <label class="option-label">Format</label>
+                        <div class="format-toggle">
+                            <button class="format-btn active" data-format="video">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                    <path
+                                        d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" />
+                                </svg>
+                                Video
+                            </button>
+                            <button class="format-btn" data-format="audio">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                    <path
+                                        d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                                </svg>
+                                Audio Only
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Button -->
+                <button id="download-btn" class="btn btn-download">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
+                    <span class="btn-text">Download</span>
+                    <span class="btn-loader"></span>
+                </button>
+            </section>
+
+            <!-- Progress Section (Hidden initially) -->
+            <section id="progress-section" class="progress-section glass-card hidden">
+                <h3 class="section-title">Downloading...</h3>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <span id="progress-text" class="progress-text">0%</span>
+                </div>
+                <p id="progress-status" class="progress-status">Starting download...</p>
+            </section>
+
+            <!-- Batch Progress Section (Hidden initially) -->
+            <section id="batch-progress-section" class="progress-section glass-card hidden">
+                <h3 class="section-title">Batch Download</h3>
+                <div class="batch-stats">
+                    <span id="batch-count">0 / 0</span> videos completed
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="batch-progress-fill" class="progress-fill"></div>
+                    </div>
+                    <span id="batch-progress-text" class="progress-text">0%</span>
+                </div>
+                <p id="batch-status" class="progress-status">Processing queue...</p>
+                <div id="current-download-info" class="current-download">
+                    <!-- Current download details -->
+                </div>
+            </section>
+
+            <!-- Complete Section (Hidden initially) -->
+            <section id="complete-section" class="complete-section glass-card hidden">
+                <div class="complete-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                </div>
+                <h3 class="section-title">Download Complete!</h3>
+                <p id="complete-filename" class="complete-filename"></p>
+                <a id="download-link" href="#" class="btn btn-success" download>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                    </svg>
+                    Save File
+                </a>
+                <button id="new-download-btn" class="btn btn-secondary">Download Another</button>
+            </section>
+
+            <!-- Error Section (Hidden initially) -->
+            <section id="error-section" class="error-section glass-card hidden">
+                <div class="error-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                    </svg>
+                </div>
+                <h3 class="section-title">Oops! Something went wrong</h3>
+                <p id="error-message" class="error-message">An error occurred</p>
+                <button id="retry-btn" class="btn btn-primary">Try Again</button>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Built with Flask & yt-dlp • For educational purposes only</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
